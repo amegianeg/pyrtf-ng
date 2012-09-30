@@ -171,10 +171,17 @@ class Renderer:
     def _RendMarginsPropertySet(self, margin_props, settings, suffix=''):
         if not margin_props: return
 
-        settings.append(margin_props.Top, 'margt' + suffix + '%s')
-        settings.append(margin_props.Left, 'margl' + suffix + '%s')
-        settings.append(margin_props.Bottom, 'margb' + suffix + '%s')
-        settings.append(margin_props.Right, 'margr' + suffix + '%s')
+        settings.append(margin_props.Top, "".join(['margt', suffix,'%s']))
+        settings.append(margin_props.Left, "".join(['margl', suffix, '%s']))
+        settings.append(margin_props.Bottom, "".join(['margb', suffix,'%s']))
+        settings.append(margin_props.Right, "".join(['margr', suffix, '%s']))
+
+    def _RendCellMarginsPropertySet(self, margin_props, settings, suffix=''):
+        if not margin_props: return
+        settings.append(margin_props.Top, "".join(['clpadt', suffix, '%s', r'\clpadft3']))
+        settings.append(margin_props.Left, "".join(['clpadl', suffix, '%s', r'\clpadfl3']))
+        settings.append(margin_props.Bottom, "".join(['clpadb', suffix, '%s', r'\clpadfb3']))
+        settings.append(margin_props.Right, "".join(['clpadr', suffix, '%s', r'\clpadfr3']))
 
     def _RendParagraphPropertySet(self, paragraph_props, settings):
         if not paragraph_props: return
@@ -592,7 +599,28 @@ class Renderer:
 
                 #  cells don't have margins so I don't know why I was doing this
                 #  I think it might have an affect in some versions of some WPs.
-                #self._RendMarginsPropertySet(cell.Margins, settings, 'cl')
+                
+                # cell have margin property in word2007rtfspce is
+                # \clpadlN    Left cell margin or padding. Overrides \trpaddlN.
+                # \clpadtN    Top cell margin or padding. Overrides \trpaddtN.
+                # \clpadbN    Bottom cell margin or padding. Overrides \trpaddbN.
+                # \clpadrN    Right cell margin or padding. Overrides \trpaddrN.
+                # \clpadflN   Units for \clpadlN:
+                #         0   Null. Ignore \clpadl in favor of \trgaphN (Word 97 style cell padding).
+                #         3   Twips.
+                # \clpadftN   Units for \clpadtN:
+                #         0   Null. Ignore \clpadt in favor of \trgaphN (Word 97 style cell padding).
+                #         3   Twips.
+                # \clpadfbN   Units for \clpadbN:
+                #         0   Null. Ignore \clpadb in favor of \trgaphN (Word 97 style cell padding).
+                #         3   Twips.
+                # \clpadfrN   Units for \clpadrN:
+                #         0   Null. Ignore \clpadr in favor of \trgaphN (Word 97 style cell padding).
+                #         3   Twips.
+
+                #todo rewrite this later
+
+                self._RendCellMarginsPropertySet(cell.Margins, settings, '')
 
                 #  if we are starting to merge or if this one is the first in what is
                 #  probably a series of merges then start the vertical merging

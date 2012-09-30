@@ -16,7 +16,7 @@ def getSuites():
     for startDir in searchDirs:
         for testFile in findTests(startDir, skipFiles):
             modBase = os.path.splitext(testFile)[0]
-            name = modBase.replace(os.path.sep, '.')
+            name = modBase.replace(os.path.sep, '.')[5:] #remove 'test.' 
             # import the testFile as a module
             mod = importModule(name)
             # iterate through module objects, checking for TestCases

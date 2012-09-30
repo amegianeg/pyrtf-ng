@@ -5,7 +5,7 @@ from rtfng.Elements import Document
 
 from rtfng.document.section import Section
 from rtfng.document.paragraph import Cell, Paragraph, Table
-from rtfng.PropertySets import BorderPropertySet, FramePropertySet, ParagraphPropertySet, TabPropertySet
+from rtfng.PropertySets import BorderPropertySet, FramePropertySet, ParagraphPropertySet, TabPropertySet, MarginsPropertySet
 
 class TableTestCase(RTFTestCase):
  
@@ -132,6 +132,29 @@ class TableTestCase(RTFTestCase):
     make_tableVerticalCellMerge = staticmethod(make_tableVerticalCellMerge)
 
     def test_tableVerticalCellMerge(self):
+        self.doTest()
+
+
+    def make_tableMarginInCell():
+        doc, section, styles = RTFTestCase.initializeDoc()
+        cell_margins0 = MarginsPropertySet(top = 0, right = 0, bottom =0 , left = 0)
+        cell_margins1 = MarginsPropertySet(top = 500, right = 500, bottom =500 , left = 500)
+        cell_margins2 = MarginsPropertySet(top = 1000, right = 1000, bottom =1000 , left = 1000)
+        section.append( 'Table with Margin in Cells' )
+
+        table = Table( TableTestCase.col1, TableTestCase.col2, TableTestCase.col3 )
+        table.AddRow( Cell( cell_margins0, 'Marign 0'   ), Cell( cell_margins1, 'Margin 500',  ), 
+                Cell(  cell_margins2, 'Margin 1000' ) )
+        table.AddRow( Cell( cell_margins0, 'Marign 0'   ), Cell( cell_margins1, 'Margin 500',  ), 
+                Cell(  cell_margins2, 'Margin 1000' ) )
+        table.AddRow( Cell( cell_margins0, 'Marign 0'   ), Cell( cell_margins1, 'Margin 500',  ), 
+                Cell(  cell_margins2, 'Margin 1000' ) )
+           
+        section.append( table )
+        return doc
+    make_tableMarginInCell = staticmethod(make_tableMarginInCell)
+
+    def test_tableMarginInCell(self):
         self.doTest()
 
     def make_tableFlowLeftToRight():

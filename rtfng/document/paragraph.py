@@ -1,7 +1,7 @@
 from types import IntType, FloatType, LongType, StringType
 from rtfng.Styles import ParagraphStyle
 from rtfng.PropertySets import (
-    ParagraphPropertySet, FramePropertySet, ShadingPropertySet)
+    ParagraphPropertySet, FramePropertySet, ShadingPropertySet, MarginsPropertySet, )
 
 class Paragraph(list):
     def __init__(self, *params):
@@ -121,7 +121,6 @@ class Cell(list):
         self.SetVerticalMerge(kwargs.get('vertical_merge', False))
 
         self._append = super(Cell, self).append
-
         for param in params:
             if   isinstance(param, StringType): self.append(param)
             elif isinstance(param, Paragraph): self.append(param)
